@@ -1,0 +1,221 @@
+version: '3.8'
+
+services:
+  # =====================================================
+  # PostgreSQL Database
+  # =====================================================
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: [TU_PASSWORD]
+      POSTGRES_DB: bank_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    configs:
+      - source: init_sql
+        target: /docker-entrypoint-initdb.d/init.sql
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+        reservations:
+          cpus: '0.10'
+          memory: 256M
+
+  # =====================================================
+  # pgAdmin
+  # =====================================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: [TU_EMAIL]
+      PGADMIN_DEFAULT_PASSWORD: [TU_PASSWORD]
+    ports:
+      - "5050:80"
+    configs:
+      - source: pgadmin_servers
+        target: /pgadmin4/servers.json
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+
+  # =====================================================
+  # Zookeeper
+  # =====================================================
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.0
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+
+  # =====================================================
+  # Kafka
+  # =====================================================
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 768M
+        reservations:
+          cpus: '0.10'
+          memory: 512M
+
+  # =====================================================
+  # Kafka UI
+  # =====================================================
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    environment:
+      KAFKA_CLUSTERS_0_NAME: nttdata-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    ports:
+      - "8090:8080"
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+
+  # =====================================================
+  # Client Service
+  # =====================================================
+  client-service:
+    image: nttdata/client-service:latest
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank_db
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    volumes:
+      - type: bind
+        source: ./logs/client-service
+        target: /app/logs
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 768M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8081/api/clients"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+  # =====================================================
+  # Account Service
+  # =====================================================
+  account-service:
+    image: nttdata/account-service:latest
+    ports:
+      - "8082:8082"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank_db
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    volumes:
+      - type: bind
+        source: ./logs/account-service
+        target: /app/logs
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 768M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8082/api/accounts"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+  # =====================================================
+  # Bank Management Composite Service
+  # =====================================================
+  bank-mgnt-composite:
+    image: nttdata/bank-mgnt-composite:latest
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVICES_CLIENT_SERVICE_URL: http://client-service:8081
+      SERVICES_ACCOUNT_SERVICE_URL: http://account-service:8082
+    volumes:
+      - type: bind
+        source: ./logs/bank-mgnt-composite
+        target: /app/logs
+    networks:
+      - nttdata-network
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 768M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8083/api/graphiql"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
+
+networks:
+  nttdata-network:
+    driver: overlay
+
+volumes:
+  postgres_data:
+
+configs:
+  init_sql:
+    file: ./BaseDatos.sql
+  pgadmin_servers:
+    file: ./docker/pgadmin/servers.json

@@ -1,0 +1,45 @@
+# Gradle
+.gradle/
+build/
+!**/src/**/build/
+
+# IDEs
+.idea/
+*.iml
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+.nb-configuration/
+
+# Logs
+logs/
+*.log
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Archivos de configuración local (según petición del usuario)
+# Se recomienda usar los archivos .dist como plantilla
+start.sh
+clean.sh
+docker-compose.yml
+docker-stack.yml
+
+# Mantener los archivos .dist en el repositorio
+!start.sh.dist
+!clean.sh.dist
+!docker-compose.yml.dist
+!docker-stack.yml.dist
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Database Data (if mapped to host)
+postgres_data/
+
+# Pitest reports
+**/build/reports/pitest/

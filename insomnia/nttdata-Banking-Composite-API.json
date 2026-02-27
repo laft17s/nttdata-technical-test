@@ -1,0 +1,124 @@
+{
+    "_type": "export",
+    "__export_format": 4,
+    "__export_date": "2025-12-07T18:30:00.000Z",
+    "__export_source": "insomnia.desktop.app:v2023.5.8",
+    "resources": [
+        {
+            "_id": "req_composite_graphql",
+            "parentId": "wrk_composite",
+            "modified": 1701974000000,
+            "created": 1701974000000,
+            "url": "http://localhost:8083/graphql",
+            "name": "Get Person Data",
+            "description": "Fetches person data including client info, accounts, and transactions.",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/graphql",
+                "text": "{\"query\":\"query {\\n  person(identification: \\\"1234567890\\\") {\\n    name\\n    identification\\n    age\\n    gender\\n    client {\\n      clientId\\n      status\\n      accounts {\\n        accountNumber\\n        accountType\\n        initialBalance\\n        status\\n        transactions {\\n          id\\n          date\\n          transactionType\\n          amount\\n          balance\\n        }\\n      }\\n    }\\n  }\\n}\"}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1701974000000,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_composite_people",
+            "parentId": "wrk_composite",
+            "modified": 1701974200000,
+            "created": 1701974200000,
+            "url": "http://localhost:8083/graphql",
+            "name": "Get All People",
+            "description": "Fetches all persons with their clients, accounts, and transactions.",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/graphql",
+                "text": "{\"query\":\"query {\\n  people {\\n    name\\n    identification\\n    gender\\n    client {\\n      clientId\\n      accounts {\\n        accountNumber\\n        transactions {\\n          amount\\n          transactionType\\n        }\\n      }\\n    }\\n  }\\n}\"}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1701974200000,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "req_composite_mutation",
+            "parentId": "wrk_composite",
+            "modified": 1701974100000,
+            "created": 1701974100000,
+            "url": "http://localhost:8083/graphql",
+            "name": "Create Client with Account",
+            "description": "Creates a client, an account, and an initial transaction.",
+            "method": "POST",
+            "body": {
+                "mimeType": "application/graphql",
+                "text": "{\"query\":\"mutation {\\n  createClientWithAccount(\\n    client: {\\n      name: \\\"Nuevo Cliente\\\"\\n      gender: \\\"M\\\"\\n      age: 30\\n      identification: \\\"9988776655\\\"\\n      address: \\\"Calle Falsa 123\\\"\\n      phone: \\\"0991122334\\\"\\n      password: \\\"1234\\\"\\n      status: \\\"ACTIVO\\\"\\n    }\\n    account: {\\n      accountNumber: \\\"556677\\\"\\n      accountType: \\\"AHORRO\\\"\\n      initialBalance: 100.00\\n      status: \\\"ACTIVO\\\"\\n    }\\n  ) {\\n    name\\n    identification\\n    client {\\n      clientId\\n      status\\n      accounts {\\n        accountNumber\\n        initialBalance\\n        transactions {\\n          transactionType\\n          amount\\n          balance\\n        }\\n      }\\n    }\\n  }\\n}\"}"
+            },
+            "parameters": [],
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "authentication": {},
+            "metaSortKey": -1701973900000,
+            "isPrivate": false,
+            "settingStoreCookies": true,
+            "settingSendCookies": true,
+            "settingDisableRenderRequestBody": false,
+            "settingEncodeUrl": true,
+            "settingRebuildPath": true,
+            "settingFollowRedirects": "global",
+            "_type": "request"
+        },
+        {
+            "_id": "wrk_composite",
+            "parentId": null,
+            "modified": 1701974000000,
+            "created": 1701974000000,
+            "name": "Laft Banking Composite API",
+            "description": "API collection for the Bank Management Composite Service (GraphQL)",
+            "scope": "collection",
+            "_type": "workspace"
+        },
+        {
+            "_id": "env_composite",
+            "parentId": "wrk_composite",
+            "modified": 1701974000000,
+            "created": 1701974000000,
+            "name": "Base Environment",
+            "data": {},
+            "dataPropertyOrder": null,
+            "color": null,
+            "isPrivate": false,
+            "metaSortKey": 1701974000000,
+            "_type": "environment"
+        }
+    ]
+}

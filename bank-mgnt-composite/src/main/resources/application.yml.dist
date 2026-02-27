@@ -1,0 +1,16 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: bank-mgnt-composite
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+
+services:
+  client-service:
+    url: http://localhost:8081
+  account-service:
+    url: http://localhost:8082

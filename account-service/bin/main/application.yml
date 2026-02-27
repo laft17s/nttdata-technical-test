@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: account-service
+  
+  webflux:
+    base-path: /api
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nttdata_bank
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+  
+  kafka:
+    bootstrap-servers: localhost:9093
+    consumer:
+      group-id: account-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+    listener:
+      ack-mode: manual
+    properties:
+      spring.json.trusted.packages: "*"
+
+server:
+  port: 8082
+
+logging:
+  level:
+    com.nttdata: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+---
+# Perfil para Docker
+spring:
+  config:
+    activate:
+      on-profile: docker
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/nttdata_bank
+  
+  kafka:
+    bootstrap-servers: kafka:9092
+  
+logging:
+  file:
+    name: logs/account-service.log

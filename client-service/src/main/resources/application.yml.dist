@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: client-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/nttdata_bank
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-timeout: 20000
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+  
+  kafka:
+    bootstrap-servers: localhost:9093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+    properties:
+      spring.json.trusted.packages: "*"
+
+server:
+  port: 8081
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    com.nttdata: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+---
+# Perfil para Docker
+spring:
+  config:
+    activate:
+      on-profile: docker
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/nttdata_bank
+  
+  kafka:
+    bootstrap-servers: kafka:9092

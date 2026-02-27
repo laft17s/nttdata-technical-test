@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: bank-mgnt-composite
+  
+  webflux:
+    base-path: /api
+  
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+
+services:
+  client-service:
+    url: http://localhost:8081
+  account-service:
+    url: http://localhost:8082
+
+server:
+  port: 8083
+
+logging:
+  level:
+    com.nttdata: DEBUG
+    org.springframework.web: INFO
+
+---
+# Perfil para Docker
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+services:
+  client-service:
+    url: http://client-service:8081
+  account-service:
+    url: http://account-service:8082
+
+logging:
+  file:
+    name: logs/bank-mgnt-composite.log

@@ -1,0 +1,58 @@
+type Query {
+    person(identification: String!): Person
+    people: [Person]
+}
+
+type Person {
+    name: String
+    gender: String
+    age: Int
+    identification: String
+    address: String
+    phone: String
+    client: Client
+}
+
+type Client {
+    clientId: String
+    status: String
+    accounts: [Account]
+}
+
+type Account {
+    accountNumber: String
+    accountType: String
+    initialBalance: Float
+    status: String
+    transactions: [Transaction]
+}
+
+type Transaction {
+    id: ID
+    date: String
+    transactionType: String
+    amount: Float
+    balance: Float
+}
+
+input ClientInput {
+    name: String!
+    gender: String!
+    age: Int!
+    identification: String!
+    address: String
+    phone: String
+    password: String!
+    status: String!
+}
+
+input AccountInput {
+    accountNumber: String!
+    accountType: String!
+    initialBalance: Float!
+    status: String!
+}
+
+type Mutation {
+    createClientWithAccount(client: ClientInput!, account: AccountInput!): Person
+}

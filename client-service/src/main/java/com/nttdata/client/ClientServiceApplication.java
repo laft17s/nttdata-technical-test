@@ -1,0 +1,21 @@
+package com.nttdata.client;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.kafka.annotation.EnableKafka;
+
+/**
+ * Aplicación principal del microservicio Client Service
+ */
+@SpringBootApplication(scanBasePackages = {
+    "com.nttdata.client",
+    "com.nttdata.common",
+    "com.nttdata.shared"
+})
+@EnableKafka
+public class ClientServiceApplication {
+    
+    public static void main(String[] args) {
+        SpringApplication.run(ClientServiceApplication.class, args);
+    }
+}

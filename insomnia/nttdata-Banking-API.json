@@ -1,0 +1,290 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "resources": [
+    {
+      "_type": "workspace",
+      "_id": "wrk_nttdata_banking",
+      "parentId": null,
+      "name": "Nttdata Banking API",
+      "description": "",
+      "scope": "collection"
+    },
+    {
+      "_type": "environment",
+      "_id": "env_nttdata_banking_base",
+      "parentId": "wrk_nttdata_banking",
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": null,
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1600000000000
+    },
+    {
+      "_type": "request_group",
+      "_id": "fld_client",
+      "parentId": "wrk_nttdata_banking",
+      "name": "Nttdata Banking - Client Service",
+      "environment": {},
+      "metaSortKey": -1000
+    },
+    {
+      "_type": "request",
+      "_id": "req_get_all_clients",
+      "parentId": "fld_client",
+      "name": "Get All Clients",
+      "method": "GET",
+      "url": "{{ base_url_client }}/clients",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -100
+    },
+    {
+      "_type": "request",
+      "_id": "req_get_client_by_id",
+      "parentId": "fld_client",
+      "name": "Get Client by ID",
+      "method": "GET",
+      "url": "{{ base_url_client }}/clients/550e8400-e29b-41d4-a716-446655440001",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -90
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_client_jose",
+      "parentId": "fld_client",
+      "name": "Create Client - Jose Lema",
+      "method": "POST",
+      "url": "{{ base_url_client }}/clients",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Jose Lema\",\n  \"gender\": \"M\",\n  \"age\": 35,\n  \"identification\": \"1234567890\",\n  \"address\": \"Otavalo sn y principal\",\n  \"phone\": \"098254785\",\n  \"password\": \"1234\",\n  \"status\": \"ACTIVO\"\n}"
+      },
+      "metaSortKey": -80
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_client_marianela",
+      "parentId": "fld_client",
+      "name": "Create Client - Marianela Montalvo",
+      "method": "POST",
+      "url": "{{ base_url_client }}/clients",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Marianela Montalvo\",\n  \"gender\": \"F\",\n  \"age\": 28,\n  \"identification\": \"0987654321\",\n  \"address\": \"Amazonas y NNUU\",\n  \"phone\": \"097548965\",\n  \"password\": \"5678\",\n  \"status\": \"ACTIVO\"\n}"
+      },
+      "metaSortKey": -70
+    },
+    {
+      "_type": "request",
+      "_id": "req_update_client",
+      "parentId": "fld_client",
+      "name": "Update Client",
+      "method": "PUT",
+      "url": "{{ base_url_client }}/clients/550e8400-e29b-41d4-a716-446655440001",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Jose Lema Updated\",\n  \"phone\": \"099999999\"\n}"
+      },
+      "metaSortKey": -60
+    },
+    {
+      "_type": "request",
+      "_id": "req_delete_client",
+      "parentId": "fld_client",
+      "name": "Delete Client",
+      "method": "DELETE",
+      "url": "{{ base_url_client }}/clients/550e8400-e29b-41d4-a716-446655440001",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -50
+    },
+    {
+      "_type": "request_group",
+      "_id": "fld_account",
+      "parentId": "wrk_nttdata_banking",
+      "name": "Nttdata Banking - Account Service",
+      "environment": {},
+      "metaSortKey": -900
+    },
+    {
+      "_type": "request",
+      "_id": "req_get_all_accounts",
+      "parentId": "fld_account",
+      "name": "Get All Accounts",
+      "method": "GET",
+      "url": "{{ base_url_account }}/accounts",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -100
+    },
+    {
+      "_type": "request",
+      "_id": "req_get_account_by_number",
+      "parentId": "fld_account",
+      "name": "Get Account by Number",
+      "method": "GET",
+      "url": "{{ base_url_account }}/accounts/478758",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -90
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_account_ahorro",
+      "parentId": "fld_account",
+      "name": "Create Account - Ahorro",
+      "method": "POST",
+      "url": "{{ base_url_account }}/accounts",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"accountNumber\": \"478758\",\n  \"accountType\": \"AHORRO\",\n  \"initialBalance\": 2000.00,\n  \"status\": \"ACTIVO\",\n  \"clientId\": \"550e8400-e29b-41d4-a716-446655440001\"\n}"
+      },
+      "metaSortKey": -80
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_account_corriente",
+      "parentId": "fld_account",
+      "name": "Create Account - Corriente",
+      "method": "POST",
+      "url": "{{ base_url_account }}/accounts",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"accountNumber\": \"585545\",\n  \"accountType\": \"CORRIENTE\",\n  \"initialBalance\": 1000.00,\n  \"status\": \"ACTIVO\",\n  \"clientId\": \"550e8400-e29b-41d4-a716-446655440001\"\n}"
+      },
+      "metaSortKey": -70
+    },
+    {
+      "_type": "request",
+      "_id": "req_get_movements",
+      "parentId": "fld_account",
+      "name": "Get Movements",
+      "method": "GET",
+      "url": "{{ base_url_account }}/transactions",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -60
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_movement_deposit",
+      "parentId": "fld_account",
+      "name": "Create Movement - Deposit",
+      "method": "POST",
+      "url": "{{ base_url_account }}/transactions",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"accountNumber\": \"478758\",\n  \"transactionType\": \"DEPOSITO\",\n  \"amount\": 600.00\n}"
+      },
+      "metaSortKey": -50
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_movement_withdrawal",
+      "parentId": "fld_account",
+      "name": "Create Movement - Withdrawal",
+      "method": "POST",
+      "url": "{{ base_url_account }}/transactions",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"accountNumber\": \"478758\",\n  \"transactionType\": \"RETIRO\",\n  \"amount\": 575.00\n}"
+      },
+      "metaSortKey": -40
+    },
+    {
+      "_type": "request",
+      "_id": "req_create_movement_error",
+      "parentId": "fld_account",
+      "name": "Create Movement - Insufficient Balance (Error)",
+      "method": "POST",
+      "url": "{{ base_url_account }}/transactions",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"accountNumber\": \"478758\",\n  \"transactionType\": \"RETIRO\",\n  \"amount\": 999999.00\n}"
+      },
+      "metaSortKey": -30
+    },
+    {
+      "_type": "request",
+      "_id": "req_generate_report",
+      "parentId": "fld_account",
+      "name": "Generate Report",
+      "method": "GET",
+      "url": "{{ base_url_account }}/reports?fecha=2024-01-01,2024-12-31&cliente=550e8400-e29b-41d4-a716-446655440001",
+      "headers": [],
+      "body": {},
+      "metaSortKey": -20
+    },
+    {
+      "_type": "environment",
+      "_id": "env_local",
+      "parentId": "env_nttdata_banking_base",
+      "name": "Nttdata Banking - Local",
+      "data": {
+        "base_url_client": "http://localhost:8081/api",
+        "base_url_account": "http://localhost:8082/api"
+      }
+    },
+    {
+      "_type": "environment",
+      "_id": "env_docker",
+      "parentId": "env_nttdata_banking_base",
+      "name": "Nttdata Banking - Docker",
+      "data": {
+        "base_url_client": "http://localhost:8081/api",
+        "base_url_account": "http://localhost:8082/api"
+      }
+    }
+  ]
+}

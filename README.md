@@ -1,3 +1,15 @@
+<p align="center">
+  <a href="./README_EN.md">
+    <img src="https://img.shields.io/badge/lang-English-blue.svg" alt="English Version">
+  </a>
+</p>
+
+<div align="center" style="background-color: #d90429; padding: 20px; border-radius: 0px; width: full; margin: 0 auto;">
+  <img src="./rsrc/laft-logo.svg" width="200" alt="Laft Logo" />
+</div>
+
+<br/>
+
 # Nttdata Technical Test - Microservices Architecture
 
 Sistema bancario basado en microservicios con **Spring Boot 3.4.0**, Spring WebFlux, Kafka y PostgreSQL.
@@ -117,19 +129,33 @@ docker stack services nttdata
 ## 🧪 Testing & Calidad
 
 ### Pruebas Unitarias y Reactivas
-Implementadas con JUnit 5 y `StepVerifier` para validar los flujos de `Mono` y `Flux`.
+Implementadas con **JUnit 5**, **Mockito** y `StepVerifier` para validar los flujos de `Mono` y `Flux`.
 
+#### Ejecutar todos los tests del proyecto:
 ```bash
 ./gradlew test
 ```
 
-### Mutation Testing (Pitest)
-Para garantizar la efectividad de los tests, se ha integrado Pitest. Este genera "mutantes" en el código para verificar que los tests realmente detecten cambios lógicos.
+#### Ejecutar tests de un módulo específico:
+```bash
+./gradlew :client-service:test
+./gradlew :account-service:test
+./gradlew :bank-mgnt-composite:test
+```
 
+### Mutation Testing (Pitest)
+Para garantizar la efectividad de los tests, se ha integrado **Pitest**. Este genera "mutantes" en el código para verificar que los tests realmente detecten cambios lógicos.
+
+#### Ejecutar Mutation Testing:
 ```bash
 ./gradlew pitest
 ```
-Los reportes se generan en cada módulo: `build/reports/pitest/index.html`.
+
+#### Reportes de Cobertura y Mutación:
+Los reportes se generan en formato HTML en las siguientes rutas dentro de cada módulo:
+- **Unit Tests**: `[modulo]/build/reports/tests/test/index.html`
+- **Mutation Testing**: `[modulo]/build/reports/pitest/index.html`
+
 
 ---
 
@@ -141,7 +167,15 @@ El archivo `BaseDatos.sql` precarga automáticamente los casos de prueba del PDF
 
 ---
 
-## 🤝 Autor
-**Luis Arcángel Farro Terán**  
-*Senior Software Engineer*
-~ Febrero 2026 ~
+## 👥 Autor
+
+<div align="center">
+  <img src="https://avatars.githubusercontent.com/u/57549850?v=4" width="100" style="border-radius: 50%;" alt="Luis Arcángel Farro Terán" />
+  <br />
+  <strong>Luis Arcángel Farro Terán (LAFT)</strong>
+  <br />
+  <a href="https://github.com/laft17s">@laft17s</a>
+</div>
+
+---
+License: UNLICENSED

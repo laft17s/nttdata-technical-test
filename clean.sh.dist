@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Script para limpiar completamente el proyecto
+# Autor: [TU_NOMBRE]
+# Fecha: 2025-12-06
+
+echo "🧹 Limpiando proyecto NTTDATA Banking..."
+echo "======================================"
+echo ""
+
+# Colores
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m'
+
+# Detener todos los contenedores (Compose)
+echo -e "${YELLOW}🛑 Deteniendo contenedores con Compose...${NC}"
+docker-compose down
+
+# Eliminar Stack de Swarm (si existe)
+echo -e "${YELLOW}🌪️  Eliminando stack de Swarm...${NC}"
+docker stack rm nttdata 2>/dev/null || true
+
+# Esperar a que los servicios se detengan antes de borrar volúmenes
+echo -e "${YELLOW}⏳ Esperando que el stack se detenga...${NC}"
+sleep 5
+
+# Eliminar volúmenes de Swarm (postgres data para que se re-inicialice)
+echo -e "${YELLOW}💾 Eliminando volumen de Swarm (postgres)...${NC}"
+docker volume rm nttdata_postgres_data 2>/dev/null || true
+
+# Eliminar servicios individuales (si existen)
+echo -e "${YELLOW}🛠️  Eliminando servicios individuales...${NC}"
+docker service rm nttdata_client-service nttdata_account-service nttdata_bank-mgnt-composite nttdata_postgres nttdata_kafka nttdata_zookeeper 2>/dev/null || true
+
+# Eliminar contenedores
+echo -e "${YELLOW}🗑️  Eliminando contenedores...${NC}"
+docker-compose rm -f
+
+# Eliminar volúmenes
+echo -e "${YELLOW}💾 Eliminando volúmenes...${NC}"
+docker-compose down -v
+
+# Eliminar imágenes del proyecto
+echo -e "${YELLOW}🖼️  Eliminando imágenes del proyecto...${NC}"
+docker rmi nttdata-technical-test-client-service nttdata-technical-test-account-service 2>/dev/null || true
+
+# Limpiar imágenes huérfanas
+echo -e "${YELLOW}🧹 Limpiando imágenes huérfanas...${NC}"
+docker image prune -f
+
+# Limpiar build cache
+echo -e "${YELLOW}📦 Limpiando build cache...${NC}"
+docker builder prune -f
+
+echo ""
+echo -e "${GREEN}✅ Limpieza completada!${NC}"
+echo ""
+echo "Para volver a iniciar el proyecto:"
+echo "  ./start.sh"
